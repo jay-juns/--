@@ -170,9 +170,8 @@ function CalendarControl() {
           currentMonth === changedMonth &&
           document.querySelectorAll(".number-item")
         ) {
-          document
-            .querySelectorAll(".number-item")
-            [calendar.getDate() - 1].classList.add("calendar-today");
+          document.querySelectorAll(".number-item")[calendar.getDate() - 1].classList.add("calendar-today");
+          console.log(calendar.getDate() - 1, calendar)
         }
       },
       plotPrevMonthDates: function(dates){
@@ -218,4 +217,4 @@ function CalendarControl() {
     calendarControl.init();
   }
   
-  const calendarControl = new CalendarControl();
+const calendarControl = new CalendarControl();
