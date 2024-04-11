@@ -106,38 +106,63 @@ function CalendarControl() {
         calendarControl.displayMonth();
         calendarControl.displayYear();
         let count = 1;
-        let prevDateCount = 0;
-  
-        calendarControl.prevMonthLastDate = calendarControl.getPreviousMonthLastDate();
-        let prevMonthDatesArray = [];
-        let calendarDays = calendarControl.daysInMonth(
-          calendar.getMonth() + 1,
-          calendar.getFullYear()
-        );
-        // dates of current month
-        for (let i = 1; i < calendarDays; i++) {
-          if (i < calendarControl.firstDayNumber()) {
-            prevDateCount += 1;
-            document.querySelector(
-              ".calendar .calendar-body"
-            ).innerHTML += `<div class="prev-dates"></div>`;
-            prevMonthDatesArray.push(calendarControl.prevMonthLastDate--);
-          } else {
-            document.querySelector(
-              ".calendar .calendar-body"
-            ).innerHTML += `<div class="number-item" data-num=${count}><a class="dateNumber" href="javascript:void(0);">${count++}</a></div>`;
-          }
+        let prevDateCount = calendarControl.firstDay().getDay(); // 달력의 첫 주에 대한 이전 달의 날짜 수를 결정합니다.
+    
+        let firstDayOfMonth = new Date(calendar.getFullYear(), calendar.getMonth(), 1);
+        let daysInMonth = calendarControl.daysInMonth(calendar.getMonth() + 1, calendar.getFullYear());
+        
+        // 이전 달의 마지막 날짜를 포함한 배열을 생성합니다.
+        for (let i = 0; i < prevDateCount; i++) {
+            document.querySelector(".calendar .calendar-body").innerHTML += `<div class="prev-dates"></div>`;
         }
-        //remaining dates after month dates
-        for (let j = 0; j < prevDateCount + 1; j++) {
-          document.querySelector(
-            ".calendar .calendar-body"
-          ).innerHTML += `<div class="number-item" data-num=${count}><a class="dateNumber" href="javascript:void(0);">${count++}</a></div>`;
+    
+        // 금요일에만 특정 데이터를 표시하기 위한 인덱스 초기화
+        let fridayDataIndex = 0;
+        let fridayData = ["주헌진", "염장미", "김준석"]; // 금요일에 표시할 데이터
+    
+        // 현재 달의 모든 날짜를 순회합니다.
+        for (let day = 1; day <= daysInMonth; day++) {
+            let currentDate = new Date(calendar.getFullYear(), calendar.getMonth(), day);
+            let dayOfWeek = currentDate.getDay(); // 요일을 가져옵니다 (0: 일요일, 1: 월요일, ..., 6: 토요일)
+            let dayContent = day; // 기본적으로 표시될 날짜 내용
+            let extraClass = ""; // 추가할 클래스 초기화
+            let spanClass;
+            let currentFridayData = fridayData[fridayDataIndex % fridayData.length];
+            switch (currentFridayData) {
+                case "주헌진":
+                    spanClass = "ju";
+                    break;
+                case "염장미":
+                    spanClass = "yeom";
+                    break;
+                case "김준석":
+                    spanClass = "kim";
+                    break;
+                default:
+                    spanClass = ""; // 기본 클래스 (해당하는 경우가 없을 때)
+            }
+             // 특정 날짜에 대한 조건 확인 (예: 4월 21일)
+            if (currentDate.getMonth() === 3 && currentDate.getDate() === 21) { // JavaScript에서 월은 0부터 시작하므로 4월은 3입니다.
+                dayContent += `<span class="special-day"><i class="ico">·</i>JTBC 고양 10km</span>`;
+                extraClass = "marathon-day"; // 이 날짜에 추가할 특정 클래스
+            }
+    
+            // 금요일에만 특정 데이터 추가
+            if (dayOfWeek === 5) { // 5는 금요일을 의미
+                dayContent += `<span class="${spanClass}"><i class="ico">·</i>${currentFridayData}</span>`;
+                fridayDataIndex++; // 다음 금요일에 표시할 데이터로 인덱스 이동
+            }
+            document.querySelector(".calendar .calendar-body").innerHTML += `<div class="number-item ${extraClass}" data-num=${day}><a class="dateNumber" href="javascript:void(0);">${dayContent}</a></div>`;
         }
-        calendarControl.highlightToday();
-        calendarControl.plotPrevMonthDates(prevMonthDatesArray);
-        calendarControl.plotNextMonthDates();
-      },
+    
+        // 현재 달력 뷰에 필요한 다음 달의 날짜 수를 채웁니다.
+        let remainingSlots = 42 - (daysInMonth + prevDateCount); // 42는 일반적으로 달력의 총 슬롯 수 (6주 * 7일)
+        for (let i = 1; i <= remainingSlots; i++) {
+            document.querySelector(".calendar .calendar-body").innerHTML += `<div class="next-dates">${i}</div>`;
+        }
+    
+        calendarControl.highlightToday(); // 오늘 날짜 강조
+    },
       attachEvents: function () {
         let prevBtn = document.querySelector(".calendar .calendar-prev a");
         let nextBtn = document.querySelector(".calendar .calendar-next a");

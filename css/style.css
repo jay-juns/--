@@ -68,8 +68,40 @@
     color: var(--calendar-font-color);
     text-decoration: none;
     display: flex;
+    flex-direction:column;
     justify-content: center;
     font-size:25px;
+}
+.calendar .calendar-inner .calendar-body .number-item > a > span {
+    margin-top:5px;
+    font-size:20px;
+    display:flex;
+    align-items:center;
+    justify-content: center;
+    color:#fff;
+    font-weight:700;
+}
+.calendar .calendar-inner .calendar-body .number-item > a > .ju {
+    color:#d996d9;
+}
+.calendar .calendar-inner .calendar-body .number-item > a > .yeom {
+    color:#46ef45;
+}
+.calendar .calendar-inner .calendar-body .number-item > a > .kim {
+    color:#6567d1;
+}
+.calendar .calendar-inner .calendar-body .number-item > a > .special-day {
+    font-size:13px;
+    font-weight:400;
+    line-height:1.2;
+    color:#888;
+}
+.calendar .calendar-inner .calendar-body .number-item.calendar-today > a > span {
+    color:#fff
+}
+.calendar .calendar-inner .calendar-body div>a>span>.ico{
+    font-size:18px;
+    margin-right:4px;
 }
 
 .calendar .calendar-inner .calendar-body div:hover {
