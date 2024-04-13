@@ -110,6 +110,9 @@ function CalendarControl() {
     
         let firstDayOfMonth = new Date(calendar.getFullYear(), calendar.getMonth(), 1);
         let daysInMonth = calendarControl.daysInMonth(calendar.getMonth() + 1, calendar.getFullYear());
+
+        let today = new Date();
+        today.setHours(0, 0, 0, 0); // 시간 정보 초기화
         
         // 이전 달의 마지막 날짜를 포함한 배열을 생성합니다.
         for (let i = 0; i < prevDateCount; i++) {
@@ -126,7 +129,11 @@ function CalendarControl() {
             let dayOfWeek = currentDate.getDay(); // 요일을 가져옵니다 (0: 일요일, 1: 월요일, ..., 6: 토요일)
             let dayContent = day; // 기본적으로 표시될 날짜 내용
             let extraClass = ""; // 추가할 클래스 초기화
-            let spanClass;
+            
+            let spanText = ""; // span 내부에 표시될 텍스트
+            let spanClass = ""; // span 태그의 클래스
+
+            // 금요일 데이터 설정
             let currentFridayData = fridayData[fridayDataIndex % fridayData.length];
             switch (currentFridayData) {
                 case "주헌진":
@@ -141,17 +148,28 @@ function CalendarControl() {
                 default:
                     spanClass = ""; // 기본 클래스 (해당하는 경우가 없을 때)
             }
-             // 특정 날짜에 대한 조건 확인 (예: 4월 21일)
-            if (currentDate.getMonth() === 3 && currentDate.getDate() === 21) { // JavaScript에서 월은 0부터 시작하므로 4월은 3입니다.
-                dayContent += `<span class="special-day"><i class="ico">·</i>JTBC 고양 10km</span>`;
-                extraClass = "marathon-day"; // 이 날짜에 추가할 특정 클래스
+             // 특정 날짜에 이벤트 추가 (예: 4월 21일)
+            if (currentDate.getMonth() === 3 && currentDate.getDate() === 21) {
+                spanText = `<i class="ico">·</i>JTBC 고양 10km`;
+                spanClass = "marathon-day";
             }
     
-            // 금요일에만 특정 데이터 추가
-            if (dayOfWeek === 5) { // 5는 금요일을 의미
-                dayContent += `<span class="${spanClass}"><i class="ico">·</i>${currentFridayData}</span>`;
-                fridayDataIndex++; // 다음 금요일에 표시할 데이터로 인덱스 이동
+             // 금요일에만 특정 데이터 추가
+            if (dayOfWeek === 5) {
+                spanText = `<i class="ico">·</i>${currentFridayData}`;
+                fridayDataIndex++;
             }
+
+             // 현재 날짜 이전이면 .prev 클래스 추가
+            if (currentDate < today) {
+                spanClass += " prev"; // 기존 spanClass에 추가
+            }
+
+            // 최종 HTML 업데이트
+            if (spanText) {
+                dayContent += `<span class="${spanClass}">${spanText}</span>`;
+            }
+
             document.querySelector(".calendar .calendar-body").innerHTML += `<div class="number-item ${extraClass}" data-num=${day}><a class="dateNumber" href="javascript:void(0);">${dayContent}</a></div>`;
         }
     
@@ -233,6 +251,17 @@ function CalendarControl() {
         calendarControl.plotDates();
         calendarControl.attachEvents();
       },
+      // 기존 프로퍼티와 메소드 생략
+      attachEvents: function () {
+        let dateNumbers = document.querySelectorAll(".dateNumber");
+        dateNumbers.forEach(dateNumber => {
+            dateNumber.addEventListener("click", function () {
+                let spanContent = this.parentNode.querySelector("span") ? this.parentNode.querySelector("span").innerHTML : "데이터 없음";
+                document.getElementById("popup-content").innerHTML = spanContent;
+                document.getElementById("popup").style.display = "block";
+            });
+        });
+    },
       init: function () {
         calendarControl.plotSelectors();
         calendarControl.plotDates();
@@ -240,6 +269,7 @@ function CalendarControl() {
       }
     };
     calendarControl.init();
+    return calendarControl;
   }
   
 const calendarControl = new CalendarControl();

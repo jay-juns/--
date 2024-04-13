@@ -90,14 +90,18 @@
 .calendar .calendar-inner .calendar-body .number-item > a > .kim {
     color:#6567d1;
 }
-.calendar .calendar-inner .calendar-body .number-item > a > .special-day {
+.calendar .calendar-inner .calendar-body .number-item > a > .marathon-day {
     font-size:13px;
     font-weight:400;
     line-height:1.2;
-    color:#888;
+    color:#fff;
 }
 .calendar .calendar-inner .calendar-body .number-item.calendar-today > a > span {
     color:#fff
+}
+.calendar .calendar-inner .calendar-body .number-item > a > .prev {
+    color:#929292;
+    font-size:15px;
 }
 .calendar .calendar-inner .calendar-body div>a>span>.ico{
     font-size:18px;

@@ -4,11 +4,15 @@
         <meta charset="UTF-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>달력</title>
+        <title>마라톤 달력</title>
         <link rel="stylesheet" type="text/css" href="./css/style.css" />
     </head>
     <body>
         <div class="calendar"></div>
+        <div id="popup" style="display:none; position: fixed; left: 50%; top: 50%; transform: translate(-50%, -50%); background-color: white; border: 1px solid black; padding: 20px; z-index: 1000;">
+            <div id="popup-content">내용이 여기에 표시됩니다.</div>
+            <button onclick="document.getElementById('popup').style.display='none';">닫기</button>
+        </div>
         <script type="text/javascript" src="./js/common.js"></script>
     </body>
 </html>
