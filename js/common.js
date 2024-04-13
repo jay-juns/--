@@ -251,17 +251,7 @@ function CalendarControl() {
         calendarControl.plotDates();
         calendarControl.attachEvents();
       },
-      // 기존 프로퍼티와 메소드 생략
-      attachEvents: function () {
-        let dateNumbers = document.querySelectorAll(".dateNumber");
-        dateNumbers.forEach(dateNumber => {
-            dateNumber.addEventListener("click", function () {
-                let spanContent = this.parentNode.querySelector("span") ? this.parentNode.querySelector("span").innerHTML : "데이터 없음";
-                document.getElementById("popup-content").innerHTML = spanContent;
-                document.getElementById("popup").style.display = "block";
-            });
-        });
-    },
+      
       init: function () {
         calendarControl.plotSelectors();
         calendarControl.plotDates();
@@ -269,7 +259,6 @@ function CalendarControl() {
       }
     };
     calendarControl.init();
-    return calendarControl;
   }
   
 const calendarControl = new CalendarControl();
