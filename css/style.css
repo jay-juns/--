@@ -18,7 +18,15 @@
     padding: 0;
     margin: 0;
 }
-
+html, body {
+    width:100%;
+    height:100%;
+}
+button {
+    border:none;
+    background-color: transparent;
+    cursor: pointer;
+}
 .calendar {
     font-family: 'IBM Plex Sans', sans-serif;
     position: relative;
@@ -26,7 +34,7 @@
     width:100%;
     background: var(--calendar-bg-color);
     color: var(--calendar-font-color);
-    margin: 20px auto;
+    margin: 0 auto;
     box-sizing: border-box;
     overflow: hidden;
     font-weight: normal;
@@ -44,11 +52,14 @@
 }
 
 .calendar .calendar-inner .calendar-body div {
+    display: flex;
+    align-items:center;
+    justify-content: center;
     padding: 15px;
     min-height: 30px;
     line-height: 30px;
     border: 1px solid transparent;
-    margin: 10px 2px 0px;
+    margin: 10px 0 0;
     font-size:22px;
 }
 .calendar .calendar-inner .calendar-body .red-day {
@@ -64,15 +75,18 @@
     border-bottom: 1px solid var(--weekdays-border-bottom-color);
 }
 
-.calendar .calendar-inner .calendar-body div>a {
+.calendar .calendar-inner .calendar-body div > button {
+    width:100%;
+    height:100%;
     color: var(--calendar-font-color);
     text-decoration: none;
     display: flex;
     flex-direction:column;
+    align-items:center;
     justify-content: center;
     font-size:25px;
 }
-.calendar .calendar-inner .calendar-body .number-item > a > span {
+.calendar .calendar-inner .calendar-body .number-item > button > span {
     margin-top:5px;
     font-size:20px;
     display:flex;
@@ -81,29 +95,29 @@
     color:#fff;
     font-weight:700;
 }
-.calendar .calendar-inner .calendar-body .number-item > a > .ju {
+.calendar .calendar-inner .calendar-body .number-item > button > .ju {
     color:#d996d9;
 }
-.calendar .calendar-inner .calendar-body .number-item > a > .yeom {
+.calendar .calendar-inner .calendar-body .number-item > button > .yeom {
     color:#46ef45;
 }
-.calendar .calendar-inner .calendar-body .number-item > a > .kim {
+.calendar .calendar-inner .calendar-body .number-item > button > .kim {
     color:#6567d1;
 }
-.calendar .calendar-inner .calendar-body .number-item > a > .marathon-day {
+.calendar .calendar-inner .calendar-body .number-item > button > .marathon-day {
     font-size:13px;
     font-weight:400;
     line-height:1.2;
     color:#fff;
 }
-.calendar .calendar-inner .calendar-body .number-item.calendar-today > a > span {
+.calendar .calendar-inner .calendar-body .number-item.calendar-today > button > span {
     color:#fff
 }
-.calendar .calendar-inner .calendar-body .number-item > a > .prev {
+.calendar .calendar-inner .calendar-body .number-item > button > .prev {
     color:#929292;
     font-size:15px;
 }
-.calendar .calendar-inner .calendar-body div>a>span>.ico{
+.calendar .calendar-inner .calendar-body div > button >span>.ico{
     font-size:18px;
     margin-right:4px;
 }
@@ -200,7 +214,34 @@
   border: 1px solid transparent;
   pointer-events: none;
 }
-
+.date-popup {
+    width:100%;
+    height:100%;
+    position:fixed;
+    left:0;
+    top:0;
+    background-color:rgba(0, 0, 0, 0.75)
+}
+.popup-wrapper {
+    min-width:410px;
+    width:auto;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform:translate(-50%, -50%);
+    background: #fff;
+    padding: 30px 20px 20px;
+    border-radius: 8px;
+}
+.popup-content {   
+    display: flex;
+    flex-direction: column;
+}
+.date-popup .close-popup {
+    position:absolute;
+    right:5px;
+    top:5px;
+}
 @media all and (max-width:1279px) {
     .calendar {max-width:95%}
 }
