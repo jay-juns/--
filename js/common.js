@@ -112,7 +112,7 @@ function CalendarControl() {
                 let currentDate = new Date(calendar.getFullYear(), calendar.getMonth(), day);
                 let dayOfWeek = currentDate.getDay(); // 요일을 가져옵니다 (0: 일요일, 1: 월요일, ..., 6: 토요일)
                 let dayContent = day; // 기본적으로 표시될 날짜 내용
-                let extraClass = ""; // 추가할 클래스 초기화
+                let extraClass = dayOfWeek === 0 ? "red-day" : ""; // 일요일인 경우 'red-day' 클래스 추가
                 
                 let spanText = ""; // span 내부에 표시될 텍스트
                 let spanClass = ""; // span 태그의 클래스
@@ -155,7 +155,7 @@ function CalendarControl() {
                 }
         
                 // 기존 onclick 제거
-                document.querySelector(".calendar .calendar-body").innerHTML += `<div class="number-item ${extraClass}" data-num="${day}"><button class="dateNumber" data-day="${day}" onclick='calendarControl.showDatePopup(${day}, this.parentNode)'>${dayContent}</button></div>`;
+                document.querySelector(".calendar .calendar-body").innerHTML += `<div class="number-item ${extraClass}" data-num="${day}"><button class="dateNumber ${extraClass}" onclick='calendarControl.showDatePopup(${day}, this.parentNode)'>${dayContent}</button></div>`;
             }
 
             this.attachDateClickHandlers(); // 이벤트 리스너 다시 설정
