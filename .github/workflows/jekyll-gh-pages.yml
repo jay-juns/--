@@ -33,11 +33,12 @@ jobs:
       - name: Build with Jekyll
         uses: actions/jekyll-build-pages@v1
         with:
-          name: github-pages-${{ github.run_id }}  # 고유 이름 설정
           source: ./
           destination: ./_site
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
+        with:
+          name: "github-pages-${{ github.run_id }}"  # 고유 이름 설정
 
   # Deployment job
   deploy:
