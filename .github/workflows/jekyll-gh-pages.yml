@@ -20,29 +20,29 @@ jobs:
     runs-on: ubuntu-latest  # Use the latest Ubuntu runner
     steps:
       - name: Checkout
-        uses: actions/checkout@v4  # Check out the repository code
+        uses: actions/checkout@v4  # Checks out the repository code
 
       - name: Setup Node.js
         uses: actions/setup-node@v2
         with:
-          node-version: '20'  # Set Node.js to version 20
+          node-version: '20'  # Sets Node.js to version 20
 
-      - name: Setup Pages
-        uses: actions/configure-pages@v5  # Configure GitHub Pages
+      - name: Setup GitHub Pages
+        uses: actions/configure-pages@v5  # Configures GitHub Pages environment
 
       - name: Install dependencies
-        run: npm install  # Install dependencies specified in package.json
+        run: npm install  # Installs dependencies from package.json
 
       - name: Build with Jekyll
         uses: actions/jekyll-build-pages@v1
         with:
           source: ./
-          destination: ./_site  # Build the site and output to the _site directory
+          destination: ./_site  # Builds the site and outputs it to the _site directory
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          name: "github-pages-${{ github.run_id }}"  # Name the artifact uniquely
+          name: "github-pages-${{ github.run_id }}"  # Names the artifact uniquely for tracking
 
   deploy:
     needs: build
@@ -54,8 +54,8 @@ jobs:
       - name: Download artifact
         uses: actions/download-artifact@v3
         with:
-          name: "github-pages-${{ github.run_id }}"  # Download the built site artifact
+          name: "github-pages-${{ github.run_id }}"  # Downloads the built site artifact named after the GitHub run ID
 
       - name: Deploy to GitHub Pages
         id: deployment
-        uses: actions/deploy-pages@v4  # Deploy the site to GitHub Pages
+        uses: actions/deploy-pages@v4  # Deploys the artifact to GitHub Pages
