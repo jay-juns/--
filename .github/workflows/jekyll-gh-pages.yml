@@ -2,60 +2,56 @@
 name: Deploy Jekyll with GitHub Pages dependencies preinstalled
 
 on:
+  # Runs on pushes targeting the default branch
   push:
-    branches: ["master"]  # Trigger on pushes to the master branch
-  workflow_dispatch:  # Allow manual triggering from the Actions tab
+    branches: ["master"]
 
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+# Sets permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages
 permissions:
   contents: read
   pages: write
   id-token: write
 
+# Allow only one concurrent deployment, skipping runs queued between the run in-progress and latest queued.
+# However, do NOT cancel in-progress runs as we want to allow these production deployments to complete.
 concurrency:
   group: "pages"
-  cancel-in-progress: false  # Don't cancel in-progress deployments
+  cancel-in-progress: false
 
 jobs:
+  # Build job
   build:
-    runs-on: ubuntu-latest  # Use the latest Ubuntu runner
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v4  # Checks out the repository code
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v2
-        with:
-          node-version: '20'  # Sets Node.js to version 20
-
-      - name: Setup GitHub Pages
-        uses: actions/configure-pages@v5  # Configures GitHub Pages environment
-
-      - name: Install dependencies
-        run: npm install  # Installs dependencies from package.json
-
+        uses: actions/checkout@v4
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
       - name: Build with Jekyll
         uses: actions/jekyll-build-pages@v1
         with:
           source: ./
-          destination: ./_site  # Builds the site and outputs it to the _site directory
-
+          destination: ./_site
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          name: "github-pages-${{ github.run_id }}"  # Names the artifact uniquely for tracking
+          name: "github-pages-${{ github.run_id }}"  # 고유 이름 설정
 
-  deploy:
-    needs: build
-    runs-on: ubuntu-latest
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    steps:
-      - name: Download artifact
-        uses: actions/download-artifact@v3
-        with:
-          name: "github-pages-${{ github.run_id }}"  # Downloads the built site artifact named after the GitHub run ID
-
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v4  # Deploys the artifact to GitHub Pages
+ # Deployment job
+deploy:
+  environment:
+    name: github-pages
+    url: ${{ steps.deployment.outputs.page_url }}
+  runs-on: ubuntu-latest
+  needs: build
+  steps:
+    - name: Download artifact
+      uses: actions/download-artifact@v3
+      with:
+        name: "github-pages-${{ github.run_id }}"
+    - name: Deploy to GitHub Pages
+      id: deployment
+      uses: actions/deploy-pages@v4
