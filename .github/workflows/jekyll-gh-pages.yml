@@ -5,7 +5,6 @@ on:
   # Runs on pushes targeting the default branch
   push:
     branches: ["master"]
-
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
@@ -40,22 +39,22 @@ jobs:
         with:
           name: "github-pages-${{ github.run_id }}-${{ github.run_attempt }}"  # 이름에 실행 시도 번호 추가
 
-deploy:
-  needs: build
-  runs-on: ubuntu-latest
-  environment:
-    name: github-pages
-  steps:
-    - name: Download artifact
-      uses: actions/download-artifact@v3
-      with:
-        name: ${{ needs.build.outputs.artifact_name }}
-    - name: Deploy to GitHub Pages
-      id: deployment
-      uses: actions/deploy-pages@v4
-      with:
-        ghp_token: ${{ secrets.GITHUB_TOKEN }}
-
-  # Ensure that the environment URL is correctly captured
-  outputs:
-    page_url: ${{ steps.deployment.outputs.page_url }}
+  # Deployment job
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+    steps:
+      - name: Download artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: "github-pages-${{ needs.build.outputs.artifact_name }}"
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+    # Ensure that the environment URL is correctly captured
+    outputs:
+      page_url: ${{ steps.deployment.outputs.page_url }}
