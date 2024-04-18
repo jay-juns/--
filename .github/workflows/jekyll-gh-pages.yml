@@ -24,6 +24,8 @@ jobs:
   # Build job
   build:
     runs-on: ubuntu-latest
+    outputs:
+      artifact_name: ${{ steps.upload-artifact.outputs.artifact-name }}  # Define output at the job level
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -37,7 +39,8 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          name: "github-pages-${{ github.run_id }}-${{ github.run_attempt }}"  # 이름에 실행 시도 번호 추가
+          name: "github-pages-${{ github.run_id }}-${{ github.run_attempt }}"  # Name the artifact with run ID and attempt
+        id: upload-artifact  # Add an ID to the step to reference its outputs
 
   # Deployment job
   deploy:
@@ -49,12 +52,9 @@ jobs:
       - name: Download artifact
         uses: actions/download-artifact@v3
         with:
-          name: "github-pages-${{ needs.build.outputs.artifact_name }}"
+          name: ${{ needs.build.outputs.artifact_name }}
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-    # Ensure that the environment URL is correctly captured
-    outputs:
-      page_url: ${{ steps.deployment.outputs.page_url }}
